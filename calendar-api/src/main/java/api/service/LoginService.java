@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor //서비스에서 많이 사용됨
 public class LoginService {
 
-    private final static String LOGIN_SESSION_KEY = "USER_ID";
+    public final static String LOGIN_SESSION_KEY = "USER_ID";
     private final UserService userService;
     //로그인 생성 수정하는 기능은 아님
 

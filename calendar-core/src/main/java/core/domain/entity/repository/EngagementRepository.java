@@ -1,5 +1,4 @@
 package core.domain.entity.repository;
-
 import core.domain.entity.Engagement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
