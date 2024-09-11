@@ -1,5 +1,6 @@
 package core.domain.entity;
 
+import core.util.Encryptor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,5 +31,10 @@ public class User {
         this.email = email;
         this.password = password;
         this.birthday = birthday;
+    }
+
+    //전략 패턴 사용
+    public boolean isMatch(Encryptor encryptor, String password) {
+        return encryptor.isMatch(password, this.password);
     }
 }

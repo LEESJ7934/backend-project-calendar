@@ -4,6 +4,7 @@ package core.service;
 import core.domain.entity.User;
 import core.domain.entity.repository.UserRepository;
 import core.dto.UserCreateReq;
+import core.util.Encryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final Encryptor encryptor;
     private final UserRepository userRepository;
 
     @Transactional
@@ -25,14 +27,16 @@ public class UserService {
         return userRepository.save(new User(
                 userCreateReq.getName(),
                 userCreateReq.getEmail(),
-                userCreateReq.getPassword(),
+                encryptor.encrypt(userCreateReq.getPassword()),
                 userCreateReq.getBirthday()
         ));
     }
 
+    //패스워드 검증
     @Transactional
     public Optional<User> findPwMatchUser(String email, String password) {
         return userRepository.findByEmail(email)
-                .map(user -> user.getPassword().equals(password) ? user : null);
+                .map(user -> encryptor.isMatch(user.getPassword(), password) ? user : null);
     }
+
 }

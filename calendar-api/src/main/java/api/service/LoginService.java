@@ -22,7 +22,7 @@ public class LoginService {
     //로그인 생성 수정하는 기능은 아님
 
     @Transactional
-    public void signup(SignUpReq signupReq, HttpSession session){
+    public void signUp(SignUpReq signupReq, HttpSession session){
         //UserService에 Create를 담당(이미 존재하는 경우의 유저 검증은 UserService가 담당
         final User user = userService.create(new UserCreateReq(
                 signupReq.getName(),
