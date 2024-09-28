@@ -23,11 +23,13 @@ public class LoginApiController {
         return ResponseEntity.ok().build();
     }
 
+
     @PostMapping("/api/login")
     public ResponseEntity<Void> login(@RequestBody LoginReq loginReq, HttpSession httpSession) {
         loginService.login(loginReq, httpSession);
         return ResponseEntity.ok().build();
     }
+
 
     @PostMapping("/api/logout")
     public ResponseEntity<Void> logout(HttpSession httpSession) {
