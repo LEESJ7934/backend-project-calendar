@@ -2,6 +2,7 @@ package calendarproject.api.service;
 
 import calendarproject.api.dto.AuthUser;
 import calendarproject.api.dto.EventCreateReq;
+import calendarproject.core.domain.RequestStatus;
 import calendarproject.core.domain.entity.Engagement;
 import calendarproject.core.domain.entity.Schedule;
 import calendarproject.core.domain.entity.repository.EngagementRepository;

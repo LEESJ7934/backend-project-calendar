@@ -3,6 +3,7 @@ package calendarproject.api.util;
 
 
 import calendarproject.api.dto.EventDto;
+import calendarproject.api.dto.NotificationDto;
 import calendarproject.api.dto.ScheduleDto;
 import calendarproject.api.dto.TaskDto;
 import calendarproject.core.domain.entity.Schedule;

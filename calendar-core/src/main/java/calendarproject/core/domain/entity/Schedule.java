@@ -5,12 +5,12 @@ package calendarproject.core.domain.entity;
 import calendarproject.core.domain.Event;
 import calendarproject.core.domain.Notification;
 import calendarproject.core.domain.Task;
+import calendarproject.core.util.Period;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 
 @Builder(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -90,5 +90,9 @@ public class Schedule {
 
     public boolean isOverlapped(LocalDate date) {
         return Period.of(this.getStartAt(), this.getEndAt()).isOverlapped(date);
+    }
+
+    public boolean isOverlapped(Period period) {
+        return Period.of(this.getStartAt(), this.getEndAt()).isOverlapped(period);
     }
 }

@@ -40,9 +40,7 @@ public class UserService {
                 .map(user -> encryptor.isMatch(user.getPassword(), password) ? user : null);
     }
 
-    @Transactional
     public User getOrThrowById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new CalendarException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("no user."));
     }
-
 }
