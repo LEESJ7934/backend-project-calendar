@@ -44,4 +44,5 @@ public class UserService {
     public User getOrThrowById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new CalendarException(ErrorCode.USER_NOT_FOUND));
     }
+
 }

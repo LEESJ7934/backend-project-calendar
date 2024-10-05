@@ -8,7 +8,9 @@ import calendarproject.core.domain.Task;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 @Builder(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -84,5 +86,9 @@ public class Schedule {
 
     public Notification toNotification() {
         return new Notification(this);
+    }
+
+    public boolean isOverlapped(LocalDate date) {
+        return Period.of(this.getStartAt(), this.getEndAt()).isOverlapped(date);
     }
 }
