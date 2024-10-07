@@ -17,7 +17,7 @@ public class TaskService {
 
     @Transactional
     public void create(TaskCreateReq req, AuthUser authUser) {
-        final Schedule taskSchedule = Schedule.task(req.getTitle(), req.getDescription(), req.getTaskAt(), userService.getOrThrowById(authUser.getId()));
+        final Schedule taskSchedule = Schedule.task(req.getTitle(), req.getDescription(), req.getTaskAt(), userService.findByUserId(authUser.getId()));
         scheduleRepository.save(taskSchedule);
     }
 

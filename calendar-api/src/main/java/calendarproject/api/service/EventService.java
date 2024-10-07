@@ -7,6 +7,8 @@ import calendarproject.core.domain.entity.Engagement;
 import calendarproject.core.domain.entity.Schedule;
 import calendarproject.core.domain.entity.repository.EngagementRepository;
 import calendarproject.core.domain.entity.repository.ScheduleRepository;
+import calendarproject.core.exception.CalendarException;
+import calendarproject.core.exception.ErrorCode;
 import calendarproject.core.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,12 +35,12 @@ public class EventService {
                 .stream()
                 .anyMatch(e -> e.getEvent().isOverlapped(req.getStartAt(), req.getEndAt())
                         && e.getStatus() == RequestStatus.ACCEPTED)) {
-            throw new RuntimeException("cannot make engagement. period overlapped.");
+            throw new CalendarException(ErrorCode.EVENT_CREATE_OVERLAPPED_PERIOD);
         }
-        final Schedule eventSchedule = Schedule.event(req.getTitle(), req.getDescription(), req.getStartAt(), req.getEndAt(), userService.getOrThrowById(authUser.getId()));
+        final Schedule eventSchedule = Schedule.event(req.getTitle(), req.getDescription(), req.getStartAt(), req.getEndAt(), userService.findByUserId(authUser.getId()));
         scheduleRepository.save(eventSchedule);
         req.getAttendeeIds().stream()
-                .map(userService::getOrThrowById)
+                .map(userService::findByUserId)
                 .forEach(user -> {
                     final Engagement e = engagementRepository.save(new Engagement(eventSchedule, user));
                     emailService.sendEngagement(e);

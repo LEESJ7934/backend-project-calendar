@@ -19,7 +19,7 @@ public class NotificationService {
 
     @Transactional
     public void create(NotificationCreateReq req, AuthUser authUser) {
-        final User writer = userService.getOrThrowById(authUser.getId());
+        final User writer = userService.findByUserId(authUser.getId());
         req.getRepeatTimes()
                 .forEach(notifyAt ->
                         scheduleRepository.save(Schedule.notification(req.getTitle(), notifyAt, writer)));

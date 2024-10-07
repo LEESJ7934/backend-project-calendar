@@ -2,6 +2,8 @@ package calendarproject.core.service;
 
 
 import calendarproject.core.dto.UserCreateReq;
+import calendarproject.core.exception.CalendarException;
+import calendarproject.core.exception.ErrorCode;
 import calendarproject.core.util.Encryptor;
 import calendarproject.core.domain.entity.User;
 import calendarproject.core.domain.entity.repository.UserRepository;
@@ -23,7 +25,7 @@ public class UserService {
     public User create(UserCreateReq userCreateReq){
         userRepository.findByEmail(userCreateReq.getEmail())
                 .ifPresent(e -> {
-                    throw new RuntimeException("user already existed");
+                    throw new CalendarException(ErrorCode.USER_NOT_FOUND);
                 });
         return userRepository.save(new User(
                 userCreateReq.getName(),
@@ -40,7 +42,7 @@ public class UserService {
                 .map(user -> encryptor.isMatch(user.getPassword(), password) ? user : null);
     }
 
-    public User getOrThrowById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("no user."));
+    public User findByUserId(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new CalendarException(ErrorCode.USER_NOT_FOUND));
     }
 }
