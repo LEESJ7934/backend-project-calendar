@@ -20,6 +20,6 @@ public class EventCreateReq {
     private final LocalDateTime startAt;
     @NotNull
     private final LocalDateTime endAt;
-
+    @NotNull
     private final List<Long> attendeeIds;
 }

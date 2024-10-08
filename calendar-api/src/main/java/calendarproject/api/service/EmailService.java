@@ -1,7 +1,8 @@
 package calendarproject.api.service;
 
-import calendarproject.core.domain.entity.Engagement;
+import calendarproject.api.dto.EngagementEmailStuff;
 
 public interface EmailService {
-    void sendEngagement(Engagement e);
+    void sendEngagement(EngagementEmailStuff stuff);
 }
+

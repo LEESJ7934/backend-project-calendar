@@ -1,10 +1,12 @@
 package calendarproject.api.service;
 
 import calendarproject.api.dto.AuthUser;
+import calendarproject.api.dto.EngagementEmailStuff;
 import calendarproject.api.dto.EventCreateReq;
 import calendarproject.core.domain.RequestStatus;
 import calendarproject.core.domain.entity.Engagement;
 import calendarproject.core.domain.entity.Schedule;
+import calendarproject.core.domain.entity.User;
 import calendarproject.core.domain.entity.repository.EngagementRepository;
 import calendarproject.core.domain.entity.repository.ScheduleRepository;
 import calendarproject.core.exception.CalendarException;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 
 @Service
@@ -38,13 +42,22 @@ public class EventService {
             throw new CalendarException(ErrorCode.EVENT_CREATE_OVERLAPPED_PERIOD);
         }
         final Schedule eventSchedule = Schedule.event(req.getTitle(), req.getDescription(), req.getStartAt(), req.getEndAt(), userService.findByUserId(authUser.getId()));
+
         scheduleRepository.save(eventSchedule);
-        req.getAttendeeIds().stream()
-                .map(userService::findByUserId)
-                .forEach(user -> {
-                    final Engagement e = engagementRepository.save(new Engagement(eventSchedule, user));
-                    emailService.sendEngagement(e);
-                });
+
+        final List<User> attendeeList = req.getAttendeeIds().stream().map(userService::findByUserId).collect(toList());
+
+        attendeeList.forEach(user -> {
+            final Engagement e = engagementRepository.save(new Engagement(eventSchedule, user));
+            emailService.sendEngagement(
+                    new EngagementEmailStuff(
+                            e.getId(),
+                            e.getAttendee().getEmail(),
+                            attendeeList.stream().map(User::getEmail).collect(toList()),
+                            e.getEvent().getTitle(),
+                            e.getEvent().getPeriod()
+                    ));
+        });
     }
 
 }

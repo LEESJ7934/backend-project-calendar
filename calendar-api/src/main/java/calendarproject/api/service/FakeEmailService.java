@@ -1,15 +1,18 @@
 package calendarproject.api.service;
 
+import calendarproject.api.dto.EngagementEmailStuff;
 import calendarproject.core.domain.entity.Engagement;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-/**
- * @author Larry
- */
+
+@Profile("test")
 @Service
 public class FakeEmailService implements EmailService {
+
     @Override
-    public void sendEngagement(Engagement e) {
-        System.out.println("메일발송 - attendee: " + e.getAttendee().getEmail() + ", scheduleId: " + e.getEvent().getId());
+    public void sendEngagement(EngagementEmailStuff stuff) {
+        System.out.println(stuff.getProps());
     }
+
 }
